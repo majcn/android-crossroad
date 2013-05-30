@@ -1,0 +1,181 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".MainActivity" >
+
+    <ImageButton
+        android:id="@+id/btnBus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bus_button"
+        android:contentDescription="AVTOBUS" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true" >
+        
+	    <ImageButton
+	        android:id="@+id/btnAB"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/a_to_b"
+	        android:contentDescription="A->B" />
+
+	    <ImageButton
+	        android:id="@+id/btnAC"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/a_to_c"
+	        android:contentDescription="A->C" />
+
+	    <ImageButton
+	        android:id="@+id/btnAD"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/a_to_d"
+	        android:contentDescription="A->D" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnTruck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/truck_button"
+        android:contentDescription="TOVORNJAK" />
+    
+    <!-- DESNA STRAN -->
+    
+    <ImageButton
+        android:id="@+id/btnCar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/car_button"
+        android:contentDescription="OSEBNI" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:gravity="right" >
+        
+	    <ImageButton
+	        android:id="@+id/btnCB"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/c_to_b"
+	        android:contentDescription="C->B" />
+
+	    <ImageButton
+	        android:id="@+id/btnCA"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/c_to_a"
+	        android:contentDescription="C->A" />
+
+	    <ImageButton
+	        android:id="@+id/btnCD"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/c_to_d"
+	        android:contentDescription="C->D" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnBigtruck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bigtruck_button"
+        android:contentDescription="VLAČILEC" />
+    
+    <!-- GORNJA STRAN -->
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:gravity="top" >
+        
+	    <ImageButton
+	        android:id="@+id/btnBA"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/b_to_a"
+	        android:contentDescription="B->A" />
+
+	    <ImageButton
+	        android:id="@+id/btnBD"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/b_to_d"
+	        android:contentDescription="B->D" />
+
+	    <ImageButton
+	        android:id="@+id/btnBC"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/b_to_c"
+	        android:contentDescription="B->C" />
+    </LinearLayout>
+    
+    <!-- SPODNJA STRAN -->
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:gravity="bottom" >
+        
+	    <ImageButton
+	        android:id="@+id/btnDA"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/d_to_a"
+	        android:contentDescription="D->A" />
+
+	    <ImageButton
+	        android:id="@+id/btnDB"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/d_to_b"
+	        android:contentDescription="D->B" />
+
+	    <ImageButton
+	        android:id="@+id/btnDC"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@null"
+	        android:src="@drawable/d_to_c"
+	        android:contentDescription="D->C" />
+    </LinearLayout>
+
+</RelativeLayout>
