@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Krizisce</string>
-    <string name="action_save_log">Shrani log</string>
+    <string name="app_name">Krizišče</string>
+    <string name="action_reset">Resetiraj števce</string>
     <string name="action_save_report">Shrani poročilo</string>
 
 </resources>

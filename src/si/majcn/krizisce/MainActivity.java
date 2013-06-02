@@ -1,14 +1,22 @@
 package si.majcn.krizisce;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import si.majcn.krizisce.entity.VehiclePass;
+import jxl.Workbook;
+import jxl.format.Border;
+import jxl.format.BorderLineStyle;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableFont;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+
+import si.majcn.krizisce.utils.DblIntCounter;
+import si.majcn.krizisce.utils.VehiclePass;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,7 +37,7 @@ public class MainActivity extends Activity {
 	private ImageButton[] mArrowButtons;
 	private ImageButton[] mVehicleButtons;
 	private Integer mSelectedVehicle;
-	private LinkedList<VehiclePass> mPasses;
+	private ArrayList<VehiclePass> mPasses;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		mContext = getApplicationContext();
-		mPasses = new LinkedList<VehiclePass>();
+		mPasses = new ArrayList<VehiclePass>();
 		
 		//INIT VEHICLE BUTTONS
 		mVehicleButtons = new ImageButton[] {
@@ -46,6 +54,10 @@ public class MainActivity extends Activity {
 			(ImageButton) findViewById(R.id.btnTruck),
 			(ImageButton) findViewById(R.id.btnBigtruck)
 		};
+		mVehicleButtons[0].setTag(VehiclePass.VEHICLE_CAR);
+		mVehicleButtons[1].setTag(VehiclePass.VEHICLE_BUS);
+		mVehicleButtons[2].setTag(VehiclePass.VEHICLE_TRUCK);
+		mVehicleButtons[3].setTag(VehiclePass.VEHICLE_BIGTRUCK);
 		OnClickListener onVehicleButtonClick = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,29 +92,27 @@ public class MainActivity extends Activity {
 			(ImageButton) findViewById(R.id.btnDB),
 			(ImageButton) findViewById(R.id.btnDC)
 		};
+		mArrowButtons[0].setTag(VehiclePass.TURN_LEFT);
+		mArrowButtons[1].setTag(VehiclePass.TURN_STRAIGHT);
+		mArrowButtons[2].setTag(VehiclePass.TURN_RIGHT);
+		mArrowButtons[3].setTag(VehiclePass.TURN_RIGHT);
+		mArrowButtons[4].setTag(VehiclePass.TURN_LEFT);
+		mArrowButtons[5].setTag(VehiclePass.TURN_STRAIGHT);
+		mArrowButtons[6].setTag(VehiclePass.TURN_STRAIGHT);
+		mArrowButtons[7].setTag(VehiclePass.TURN_RIGHT);
+		mArrowButtons[8].setTag(VehiclePass.TURN_LEFT);
+		mArrowButtons[9].setTag(VehiclePass.TURN_LEFT);
+		mArrowButtons[10].setTag(VehiclePass.TURN_STRAIGHT);
+		mArrowButtons[11].setTag(VehiclePass.TURN_RIGHT);
 		OnClickListener onArrowButtonClick = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mPasses.add(new VehiclePass(mVehicleButtons[mSelectedVehicle].getContentDescription().toString(), v.getContentDescription().toString()));
-				Toast.makeText(mContext, v.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
+				mPasses.add(new VehiclePass((Integer) mVehicleButtons[mSelectedVehicle].getTag(), (Integer) v.getTag(), v.getContentDescription().toString()));
+				//Toast.makeText(mContext, v.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
 			}
 		};
 		for(ImageButton btn : mArrowButtons) {
 			btn.setOnClickListener(onArrowButtonClick);
-		}
-	}
-	
-	private void saveToCSV(String filename, String s) {
-		File root = Environment.getExternalStorageDirectory();
-		File gpxfile = new File(root, filename);
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(gpxfile);
-			writer.write(s);
-			writer.flush();
-			writer.close();
-		} catch (IOException e) {
-            e.printStackTrace();
 		}
 	}
 
@@ -113,38 +123,118 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	private boolean saveXLSReport() {
+		if(mPasses.size() == 0) {
+			return false;
+		}
+		File storagePath = new File(Environment.getExternalStorageDirectory(), "krizisce");
+		storagePath.mkdirs();
+		File gpxfile = new File(storagePath, String.format("%s.xls", mPasses.get(0).getDateTime()));
+		SortedSet<String> listIn = new TreeSet<String>();
+		for(VehiclePass vp : mPasses) {
+			listIn.add(vp.getIn());
+		}
+		DblIntCounter counter = new DblIntCounter();
+		
+        int[] sortedVehicles = {
+        		VehiclePass.VEHICLE_CAR,
+        		VehiclePass.VEHICLE_BUS,
+        		VehiclePass.VEHICLE_TRUCK,
+        		VehiclePass.VEHICLE_BIGTRUCK
+        };
+        
+        int[] sortedTurns = {
+        		VehiclePass.TURN_LEFT,
+        		VehiclePass.TURN_STRAIGHT,
+        		VehiclePass.TURN_RIGHT
+        };
+		
+	    try {
+			WritableWorkbook workbook = Workbook.createWorkbook(gpxfile);
+			
+			WritableFont cellHeaderFont = new WritableFont(WritableFont.TIMES, 24);
+		    WritableCellFormat cellHeaderFormat = new WritableCellFormat(cellHeaderFont);
+		    WritableCellFormat cellFormat = new WritableCellFormat();
+			cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN); 
+			
+			int sheetCounter = 0;
+			for(String cIn : listIn) {
+			    WritableSheet sheet = workbook.createSheet(String.format("KRAK %s", cIn), sheetCounter++);
+				
+		        sheet.mergeCells(0, 0, 12, 0);
+		        sheet.addCell(new Label(0, 0, String.format("Štetje prometa: %s", mPasses.get(0).getDateTime()), cellHeaderFormat));
+		        sheet.setRowView(0, 30*20);
+		        
+		        for(int i=0; i<3; i++) {
+		        	sheet.addCell(new Label(i*4+1, 3, "osebni", cellFormat));
+		        	sheet.addCell(new Label(i*4+2, 3, "bus", cellFormat));
+		        	sheet.addCell(new Label(i*4+3, 3, "tov", cellFormat));
+		        	sheet.addCell(new Label(i*4+4, 3, "vlac", cellFormat));
+		        }
+		        
+		        sheet.mergeCells(1, 2, 4, 2);
+		        sheet.addCell(new Label(1, 2, "levo", cellFormat));
+		        sheet.mergeCells(5, 2, 8, 2);
+		        sheet.addCell(new Label(5, 2, "naravnost", cellFormat));
+		        sheet.mergeCells(9, 2, 12, 2);
+		        sheet.addCell(new Label(9, 2, "desno", cellFormat));
+
+	        	sheet.addCell(new Label(1, 3, "osebni", cellFormat));
+	        	sheet.addCell(new Label(2, 3, "bus", cellFormat));
+	        	sheet.addCell(new Label(3, 3, "tov", cellFormat));
+	        	sheet.addCell(new Label(4, 3, "vlac", cellFormat));
+	        	sheet.addCell(new Label(5, 3, "osebni", cellFormat));
+	        	sheet.addCell(new Label(6, 3, "bus", cellFormat));
+	        	sheet.addCell(new Label(7, 3, "tov", cellFormat));
+	        	sheet.addCell(new Label(8, 3, "vlac", cellFormat));
+	        	sheet.addCell(new Label(9, 3, "osebni", cellFormat));
+	        	sheet.addCell(new Label(10, 3, "bus", cellFormat));
+	        	sheet.addCell(new Label(11, 3, "tov", cellFormat));
+	        	sheet.addCell(new Label(12, 3, "vlac", cellFormat));
+	        	
+	        	counter.resetCounter();
+		        String prevTime = mPasses.get(0).getTimeRounded();
+		        String time = null;
+		        int row = 4;
+		        Iterator<VehiclePass> it = mPasses.iterator();
+		        while(it.hasNext()) {
+		        	VehiclePass vp = it.next();
+		        	time = vp.getTimeRounded();
+		        	if(time.equals(prevTime)) {
+		        		if(vp.getIn().equals(cIn)) {
+		        			counter.incCounter(vp.getType(), vp.getTurn());		        			
+		        		}
+		        	}
+		        	if(!it.hasNext() || !time.equals(prevTime)) {
+		        		sheet.addCell(new Label(0, row, time, cellFormat));
+		        		for(int i=0; i<sortedTurns.length; i++) {
+		        			for(int j=0; j<sortedVehicles.length; j++) {
+		        				sheet.addCell(new Label(i*sortedVehicles.length+j+1, row, Integer.toString(counter.getCounter(sortedVehicles[j], sortedTurns[i])), cellFormat));
+		        			}
+		        		}
+		        		row++;
+		        		counter.resetCounter();
+		        	}
+		        }
+			}
+	        workbook.write();
+	        workbook.close();
+		} catch (Exception e) {
+			return false;
+		}
+        return true;
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		String csvText = "";
 	    switch (item.getItemId()) {
-	    case R.id.action_save_log:
-	    	csvText = "Ura,Tip vozila,Uvoz,Izvoz\n";
-			for(VehiclePass vp : mPasses) {
-				csvText += String.format("%s,%s,%s,%s\n", vp.getTimeRounded(), vp.getType(), vp.getIn(), vp.getOut());
-			}
-	    	saveToCSV("log.csv", csvText);
-	    	Toast.makeText(this, "Shranjen Log", Toast.LENGTH_SHORT).show();
-	    	return true;
+	    case R.id.action_reset:
+	    	mPasses = new ArrayList<VehiclePass>();
 	    case R.id.action_save_report:
-	    	String filename = "A.csv";
-	    	String prevTime = "";
-	    	csvText = "";
-	    	
-	    	for(VehiclePass vp : mPasses) {
-	    		
-	    	}
-	    	HashMap<String, Integer> tabela = null; 
-	    	for(VehiclePass vp : mPasses) {
-	    		String time = vp.getTimeRounded();
-	    		if(!prevTime.equals(time)) {
-	    			tabela = new HashMap<String, Integer>();
-	    		}
-	    		String key = vp.getInOut();
-	    		if(!tabela.containsKey(key)) {
-	    			tabela.put(key, 1);
-	    		} else {
-	    			tabela.put(key, tabela.get(key) + 1);
-	    		}
+	    	if(saveXLSReport()) {
+	    		Toast.makeText(mContext, "Shranjen Log", Toast.LENGTH_SHORT).show();
+	    	} else {
+	    		Toast.makeText(mContext, "NI Shranjen Log", Toast.LENGTH_SHORT).show();
 	    	}
 	    	return true;
 	    default:
