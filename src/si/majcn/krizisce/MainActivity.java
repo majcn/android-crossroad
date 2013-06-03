@@ -15,6 +15,7 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
+import si.majcn.krizisce.log.D;
 import si.majcn.krizisce.utils.DblIntCounter;
 import si.majcn.krizisce.utils.VehiclePass;
 
@@ -140,7 +141,7 @@ public class MainActivity extends Activity {
 		}
 		File storagePath = new File(Environment.getExternalStorageDirectory(), "krizisce");
 		storagePath.mkdirs();
-		File gpxfile = new File(storagePath, String.format("%s.xls", mPasses.get(0).getDateTime()));
+		File gpxfile = new File(storagePath, String.format("%s.xls", mPasses.get(0).getDateTimeFilename()));
 		SortedSet<String> listIn = new TreeSet<String>();
 		for(VehiclePass vp : mPasses) {
 			listIn.add(vp.getIn());
@@ -232,6 +233,7 @@ public class MainActivity extends Activity {
 	        workbook.write();
 	        workbook.close();
 		} catch (Exception e) {
+			D.dbge(e.getMessage());
 			return false;
 		}
         return true;

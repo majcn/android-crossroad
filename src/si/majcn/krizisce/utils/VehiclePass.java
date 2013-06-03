@@ -48,6 +48,10 @@ public class VehiclePass {
 		return time.format("%d.%m.%Y %H:%M:%S");
 	}
 	
+	public String getDateTimeFilename() {
+		return time.format("%Y-%m-%d-%H-%M-%S");
+	}
+	
 	private String getFormatedTimeRounded(String format) {
 		if(time.minute < 15) {
 			return time.format(format.replaceAll("%S", "00"));
