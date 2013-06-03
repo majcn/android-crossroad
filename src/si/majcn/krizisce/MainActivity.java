@@ -221,13 +221,13 @@ public class MainActivity extends Activity {
 		        		}
 		        	}
 		        	if(!it.hasNext() || !time.equals(prevTime)) {
-		        		prevTime = time;
-		        		sheet.addCell(new Label(0, row, time, cellFormat));
+		        		sheet.addCell(new Label(0, row, prevTime, cellFormat));
 		        		for(int i=0; i<sortedTurns.length; i++) {
 		        			for(int j=0; j<sortedVehicles.length; j++) {
 		        				sheet.addCell(new Label(i*sortedVehicles.length+j+1, row, Integer.toString(counter.getCounter(sortedVehicles[j], sortedTurns[i])), cellFormat));
 		        			}
 		        		}
+		        		prevTime = time;
 		        		row++;
 		        		counter.resetCounter();
 		        	}
