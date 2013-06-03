@@ -20,6 +20,7 @@ import si.majcn.krizisce.utils.VehiclePass;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.app.Activity;
 import android.content.Context;
 import android.view.Menu;
@@ -39,10 +40,14 @@ public class MainActivity extends Activity {
 	private Integer mSelectedVehicle;
 	private ArrayList<VehiclePass> mPasses;
 
+	private Vibrator vib;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		
 		mContext = getApplicationContext();
 		mPasses = new ArrayList<VehiclePass>();
@@ -61,6 +66,7 @@ public class MainActivity extends Activity {
 		OnClickListener onVehicleButtonClick = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				vibrate();
 				for(int i = 0; i < mVehicleButtons.length; i++) {
 					if(v.equals(mVehicleButtons[i])) {
 						mVehicleButtons[i].setSelected(true);
@@ -107,6 +113,7 @@ public class MainActivity extends Activity {
 		OnClickListener onArrowButtonClick = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				vibrate();
 				mPasses.add(new VehiclePass((Integer) mVehicleButtons[mSelectedVehicle].getTag(), (Integer) v.getTag(), v.getContentDescription().toString()));
 				//Toast.makeText(mContext, v.getContentDescription().toString(), Toast.LENGTH_SHORT).show();
 			}
@@ -121,6 +128,10 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	private void vibrate() {
+		vib.vibrate(100);
 	}
 	
 	private boolean saveXLSReport() {
@@ -206,6 +217,7 @@ public class MainActivity extends Activity {
 		        		}
 		        	}
 		        	if(!it.hasNext() || !time.equals(prevTime)) {
+		        		prevTime = time;
 		        		sheet.addCell(new Label(0, row, time, cellFormat));
 		        		for(int i=0; i<sortedTurns.length; i++) {
 		        			for(int j=0; j<sortedVehicles.length; j++) {
@@ -230,11 +242,13 @@ public class MainActivity extends Activity {
 	    switch (item.getItemId()) {
 	    case R.id.action_reset:
 	    	mPasses = new ArrayList<VehiclePass>();
+    		Toast.makeText(mContext, "Resetirano", Toast.LENGTH_SHORT).show();
+	    	return true;
 	    case R.id.action_save_report:
 	    	if(saveXLSReport()) {
-	    		Toast.makeText(mContext, "Shranjen Log", Toast.LENGTH_SHORT).show();
+	    		Toast.makeText(mContext, "Shranjeno porocilo", Toast.LENGTH_SHORT).show();
 	    	} else {
-	    		Toast.makeText(mContext, "NI Shranjen Log", Toast.LENGTH_SHORT).show();
+	    		Toast.makeText(mContext, "NI Shranjeno porocilo", Toast.LENGTH_SHORT).show();
 	    	}
 	    	return true;
 	    default:
