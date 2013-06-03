@@ -78,6 +78,21 @@ public class VehiclePass {
 		return type;
 	}
 	
+	public String getTextType() {
+		switch (type) {
+		case VEHICLE_CAR:
+			return "OSEBNI";
+		case VEHICLE_BUS:
+			return "AVTOBUS";
+		case VEHICLE_TRUCK:
+			return "TOVORNJAK";
+		case VEHICLE_BIGTRUCK:
+			return "VLACILEC";
+		default:
+			return "NEZNAN";
+		}
+	}
+	
 	public int getTurn() {
 		return turn;
 	}

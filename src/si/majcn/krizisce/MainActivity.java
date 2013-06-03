@@ -167,11 +167,14 @@ public class MainActivity extends Activity {
 			WritableFont cellHeaderFont = new WritableFont(WritableFont.TIMES, 24);
 		    WritableCellFormat cellHeaderFormat = new WritableCellFormat(cellHeaderFont);
 		    WritableCellFormat cellFormat = new WritableCellFormat();
-			cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN); 
+			cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
+			
+			WritableSheet sheet = null;
 			
 			int sheetCounter = 0;
+			int row = 0;
 			for(String cIn : listIn) {
-			    WritableSheet sheet = workbook.createSheet(String.format("KRAK %s", cIn), sheetCounter++);
+			    sheet = workbook.createSheet(String.format("KRAK %s", cIn), sheetCounter++);
 				
 		        sheet.mergeCells(0, 0, 12, 0);
 		        sheet.addCell(new Label(0, 0, String.format("Štetje prometa: %s", mPasses.get(0).getDateTime()), cellHeaderFormat));
@@ -207,7 +210,7 @@ public class MainActivity extends Activity {
 	        	counter.resetCounter();
 		        String prevTime = mPasses.get(0).getTimeRounded();
 		        String time = null;
-		        int row = 4;
+		        row = 4;
 		        Iterator<VehiclePass> it = mPasses.iterator();
 		        while(it.hasNext()) {
 		        	VehiclePass vp = it.next();
@@ -230,6 +233,21 @@ public class MainActivity extends Activity {
 		        	}
 		        }
 			}
+			
+			sheet = workbook.createSheet(String.format("LOG"), sheetCounter++);
+        	sheet.addCell(new Label(0, 0, "Ura", cellFormat));
+        	sheet.addCell(new Label(1, 0, "Tip vozila", cellFormat));
+        	sheet.addCell(new Label(2, 0, "Uvoz", cellFormat));
+        	sheet.addCell(new Label(3, 0, "Izvoz", cellFormat));
+        	row = 1;
+        	for(VehiclePass vp : mPasses) {
+        		sheet.addCell(new Label(0, row, vp.getDateTime(), cellFormat));
+        		sheet.addCell(new Label(1, row, vp.getTextType(), cellFormat));
+        		sheet.addCell(new Label(2, row, vp.getIn(), cellFormat));
+        		sheet.addCell(new Label(3, row, vp.getOut(), cellFormat));
+        		row++;
+        	}
+			
 	        workbook.write();
 	        workbook.close();
 		} catch (Exception e) {
