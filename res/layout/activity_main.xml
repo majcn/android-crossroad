@@ -1,27 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background"
-    tools:context=".MainActivity" >
+    android:background="@drawable/main_background" >
     
     <ImageButton
-        android:id="@+id/btnStart"
+        android:id="@+id/btnChooser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/main_start"
-        android:contentDescription="Start" />
+        android:background="@drawable/main_start" />
     
     <ImageButton
         android:id="@+id/btnSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btnStart"
-        android:layout_below="@id/btnStart"
+        android:layout_alignLeft="@id/btnChooser"
+        android:layout_below="@id/btnChooser"
         android:layout_marginTop="20dp"
-        android:background="@drawable/main_settings"
-        android:contentDescription="Settings" />
+        android:background="@drawable/main_settings" />
     
     <ImageButton
         android:id="@+id/btnAbout"
@@ -30,7 +26,6 @@
         android:layout_alignLeft="@id/btnSettings"
         android:layout_below="@id/btnSettings"
         android:layout_marginTop="20dp"
-        android:background="@drawable/main_about"
-        android:contentDescription="About" />
+        android:background="@drawable/main_about" />
 
 </RelativeLayout>

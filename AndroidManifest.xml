@@ -33,6 +33,14 @@
             android:name="si.majcn.krizisce.CrossroadChooserActivity"
             android:label="@string/title_activity_crossroad_choose" >
         </activity>
+        <activity
+            android:name="si.majcn.krizisce.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="si.majcn.krizisce.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

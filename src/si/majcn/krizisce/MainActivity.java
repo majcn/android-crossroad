@@ -4,40 +4,57 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
-	
+
 	private Context mContext;
-	private ImageButton mBtnStart;
+	private ImageButton mBtnChooser;
 	private ImageButton mBtnSettings;
 	private ImageButton mBtnAbout;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//full screen
-		//getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+		// full screen
+		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getActionBar().hide();
-		
+
 		mContext = getApplicationContext();
-		mBtnStart = (ImageButton) findViewById(R.id.btnStart);
+		mBtnChooser = (ImageButton) findViewById(R.id.btnChooser);
 		mBtnSettings = (ImageButton) findViewById(R.id.btnSettings);
 		mBtnAbout = (ImageButton) findViewById(R.id.btnAbout);
-		
-		mBtnStart.setOnClickListener(new OnClickListener() {
+
+		mBtnChooser.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			    Intent intent = new Intent(mContext, CrossroadActivity.class);
-			    startActivity(intent);
+				Intent intent = new Intent(mContext,
+						CrossroadChooserActivity.class);
+				startActivity(intent);
 			}
 		});
-		
+
+		mBtnSettings.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, SettingsActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		mBtnAbout.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(mContext, AboutActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
 }
