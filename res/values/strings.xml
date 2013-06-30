@@ -4,5 +4,9 @@
     <string name="app_name">Krizišče</string>
     <string name="action_reset">Resetiraj števce</string>
     <string name="action_save_report">Shrani poročilo</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_crossroad_choose">CrossroadChooseActivity</string>
 
 </resources>
