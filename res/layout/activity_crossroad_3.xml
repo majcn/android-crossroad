@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background_3"
     tools:context=".CrossroadActivity" >
 
     <ImageButton
@@ -65,39 +65,6 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/car_button"
         android:contentDescription="OSEBNI" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:gravity="right" >
-        
-	    <ImageButton
-	        android:id="@+id/btnCB"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@null"
-	        android:src="@drawable/c_to_b"
-	        android:contentDescription="C->B" />
-
-	    <ImageButton
-	        android:id="@+id/btnCA"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@null"
-	        android:src="@drawable/c_to_a"
-	        android:contentDescription="C->A" />
-
-	    <ImageButton
-	        android:id="@+id/btnCD"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@null"
-	        android:src="@drawable/c_to_d"
-	        android:contentDescription="C->D" />
-    </LinearLayout>
 
     <ImageButton
         android:id="@+id/btnBigtruck"
