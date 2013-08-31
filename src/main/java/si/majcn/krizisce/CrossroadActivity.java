@@ -2,6 +2,7 @@ package si.majcn.krizisce;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -16,9 +17,12 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 
 import si.majcn.krizisce.log.D;
+import si.majcn.krizisce.utils.CrossroadInfo;
 import si.majcn.krizisce.utils.DblIntCounter;
 import si.majcn.krizisce.utils.VehiclePass;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Vibrator;
@@ -28,7 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-//import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -37,7 +41,7 @@ public class CrossroadActivity extends Activity {
 	private static final int DEFAULT_VEHICLE = 0; // CAR
 
 	private Context mContext;
-	private ImageButton[] mArrowButtons;
+    private CrossroadInfo mInfo;
 	private ImageButton[] mVehicleButtons;
 	private Integer mSelectedVehicle;
 	private ArrayList<VehiclePass> mPasses;
@@ -47,17 +51,37 @@ public class CrossroadActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+        final View dialogNamer = getLayoutInflater().inflate(R.layout.dialog_names, null);
 		switch (getIntent().getIntExtra(CrossroadChooserActivity.EXTRA_MESSAGE,
 				CrossroadChooserActivity.FOUR_WAY)) {
 		case CrossroadChooserActivity.THREE_WAY:
 			setContentView(R.layout.activity_crossroad_3);
+            dialogNamer.findViewById(R.id.krakD).setVisibility(View.INVISIBLE);
 			break;
 		default:
 			setContentView(R.layout.activity_crossroad_4);
 			break;
 		}
 
-		// full screen
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setView(dialogNamer);
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String name = ((EditText) dialogNamer.findViewById(R.id.name)).getText().toString().trim();
+                String locationName = ((EditText) dialogNamer.findViewById(R.id.locationName)).getText().toString().trim();
+                HashMap<String, String> roads = new HashMap<String, String>();
+                roads.put("A", ((EditText) dialogNamer.findViewById(R.id.krakA)).getText().toString().trim());
+                roads.put("B", ((EditText) dialogNamer.findViewById(R.id.krakB)).getText().toString().trim());
+                roads.put("C", ((EditText) dialogNamer.findViewById(R.id.krakC)).getText().toString().trim());
+                roads.put("D", ((EditText) dialogNamer.findViewById(R.id.krakD)).getText().toString().trim());
+                mInfo = new CrossroadInfo(name, locationName, roads);
+            }
+        });
+        alert.setCancelable(false);
+        alert.show();
+
+        // full screen
 		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getActionBar().hide();
@@ -101,6 +125,7 @@ public class CrossroadActivity extends Activity {
 		mSelectedVehicle = DEFAULT_VEHICLE;
 
 		// INIT ARROW BUTTONS
+        ImageButton[] mArrowButtons;
 		mArrowButtons = new ImageButton[] {
 				(ImageButton) findViewById(R.id.btnAB),
 				(ImageButton) findViewById(R.id.btnAC),
@@ -132,8 +157,7 @@ public class CrossroadActivity extends Activity {
 				vibrate();
 				mPasses.add(new VehiclePass(
 						(Integer) mVehicleButtons[mSelectedVehicle].getTag(),
-						(Integer) v.getTag(), v.getContentDescription()
-								.toString()));
+						(Integer) v.getTag(), v.getContentDescription().toString()));
 				// Toast.makeText(mContext,
 				// v.getContentDescription().toString(),
 				// Toast.LENGTH_SHORT).show();
@@ -151,7 +175,21 @@ public class CrossroadActivity extends Activity {
 		return true;
 	}
 
-	private void vibrate() {
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder quitDialog = new AlertDialog.Builder(CrossroadActivity.this);
+        quitDialog.setTitle("Ali res želite zapustiti štetje?");
+        quitDialog.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        quitDialog.setNegativeButton("Ne", null);
+        quitDialog.show();
+    }
+
+    private void vibrate() {
 		if (mVib != null) {
 			mVib.vibrate(100);
 		}
@@ -161,8 +199,7 @@ public class CrossroadActivity extends Activity {
 		if (mPasses.size() == 0) {
 			return false;
 		}
-		File storagePath = new File(Environment.getExternalStorageDirectory(),
-				"krizisce");
+		File storagePath = new File(Environment.getExternalStorageDirectory(), "Crossroad");
 		storagePath.mkdirs();
 		File gpxfile = new File(storagePath, String.format("%s.xls", mPasses
 				.get(0).getDateTimeFilename()));
@@ -182,10 +219,8 @@ public class CrossroadActivity extends Activity {
 		try {
 			WritableWorkbook workbook = Workbook.createWorkbook(gpxfile);
 
-			WritableFont cellHeaderFont = new WritableFont(WritableFont.TIMES,
-					24);
-			WritableCellFormat cellHeaderFormat = new WritableCellFormat(
-					cellHeaderFont);
+			WritableFont cellHeaderFont = new WritableFont(WritableFont.TIMES, 24);
+			WritableCellFormat cellHeaderFormat = new WritableCellFormat(cellHeaderFont);
 			WritableCellFormat cellFormat = new WritableCellFormat();
 			cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
 
@@ -194,12 +229,11 @@ public class CrossroadActivity extends Activity {
 			int sheetCounter = 0;
 			int row = 0;
 			for (String cIn : listIn) {
-				sheet = workbook.createSheet(String.format("KRAK %s", cIn),
-						sheetCounter++);
+				sheet = workbook.createSheet(String.format("KRAK %s", cIn), sheetCounter++);
 
 				sheet.mergeCells(0, 0, 12, 0);
 				sheet.addCell(new Label(0, 0, String.format(
-						"Štetje prometa: %s", mPasses.get(0).getDateTime()),
+						"Štetje prometa (KRAK %s): %s", cIn, mPasses.get(0).getDateTime()),
 						cellHeaderFormat));
 				sheet.setRowView(0, 30 * 20);
 
@@ -268,14 +302,30 @@ public class CrossroadActivity extends Activity {
 			sheet.addCell(new Label(3, 0, "Izvoz", cellFormat));
 			row = 1;
 			for (VehiclePass vp : mPasses) {
-				sheet.addCell(new Label(0, row, vp.getDateTime(), cellFormat));
+				sheet.addCell(new Label(0, row, vp.getTime(), cellFormat));
 				sheet.addCell(new Label(1, row, vp.getTextType(), cellFormat));
 				sheet.addCell(new Label(2, row, vp.getIn(), cellFormat));
 				sheet.addCell(new Label(3, row, vp.getOut(), cellFormat));
 				row++;
 			}
 
-			workbook.write();
+            sheet = workbook.createSheet(String.format("INFO"), sheetCounter++);
+            sheet.addCell(new Label(0, 0, "Štetje prometa v križišču z aplikacijo Crossroad", cellFormat));
+            sheet.addCell(new Label(0, 2, "Datum:"));
+            sheet.addCell(new Label(1, 2, mInfo.getDate()));
+            sheet.addCell(new Label(0, 4, "Ime in priimek števca:"));
+            sheet.addCell(new Label(1, 4, mInfo.getName()));
+            sheet.addCell(new Label(0, 6, "Križišče:"));
+            sheet.addCell(new Label(1, 6, mInfo.getLocationName()));
+            int currentRow = 8;
+            for (String cIn : listIn) {
+                sheet.addCell(new Label(0, currentRow, "Krak "+cIn+":"));
+                sheet.addCell(new Label(1, currentRow, mInfo.getRoadName(cIn)));
+                currentRow += 2;
+            }
+            //sheet.addCell(new Label(0, currentRow, "GPS:"));
+
+            workbook.write();
 			workbook.close();
 		} catch (Exception e) {
 			D.dbge(e.getMessage());
@@ -289,14 +339,14 @@ public class CrossroadActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_reset:
 			mPasses = new ArrayList<VehiclePass>();
-			Toast.makeText(mContext, "Resetirano", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Ponastavljeno", Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.action_save_report:
 			if (saveXLSReport()) {
-				Toast.makeText(mContext, "Shranjeno porocilo",
+				Toast.makeText(mContext, "Shranjeno poročilo",
 						Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(mContext, "NI Shranjeno porocilo",
+				Toast.makeText(mContext, "Poročilo NI shranjeno",
 						Toast.LENGTH_SHORT).show();
 			}
 			return true;

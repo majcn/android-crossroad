@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ime in priimek števca" />
+    <EditText
+        android:id="@+id/locationName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Križišče" />
+    <EditText
+        android:id="@+id/krakA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Krak A" />
+    <EditText
+        android:id="@+id/krakB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Krak B" />
+    <EditText
+        android:id="@+id/krakC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Krak C" />
+    <EditText
+        android:id="@+id/krakD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Krak D" />
+</LinearLayout>

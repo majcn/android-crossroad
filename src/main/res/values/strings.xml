@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Križišče</string>
-    <string name="action_reset">Resetiraj števce</string>
+    <string name="action_reset">Ponastavi števce</string>
     <string name="action_save_report">Shrani poročilo</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="action_settings">Settings</string>

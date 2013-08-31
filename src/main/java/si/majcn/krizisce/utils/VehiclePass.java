@@ -43,6 +43,10 @@ public class VehiclePass {
 	public String getOut() {
 		return out;
 	}
+
+    public String getTime() {
+        return time.format("%H:%M:%S");
+    }
 	
 	public String getDateTime() {
 		return time.format("%d.%m.%Y %H:%M:%S");
