@@ -9,7 +9,7 @@ public class CrossroadInfo {
     private String name;
     private String locationName;
     private HashMap<String, String> roads;
-	
+
     public CrossroadInfo(String name, String locationName, HashMap<String, String> roads) {
         time = new Time();
         time.setToNow();
@@ -17,7 +17,7 @@ public class CrossroadInfo {
         this.name = name;
         this.locationName = locationName;
         this.roads = roads;
-	}
+    }
 
     public String getName() {
         return name;

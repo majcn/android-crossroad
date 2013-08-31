@@ -28,7 +28,7 @@
         <activity
             android:name="si.majcn.krizisce.CrossroadActivity"
             android:label="@string/title_activity_menu"
-	    android:screenOrientation="landscape" >
+        android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="si.majcn.krizisce.CrossroadChooserActivity"
