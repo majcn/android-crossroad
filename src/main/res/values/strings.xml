@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Križišče</string>
+    <string name="app_name">Crossroad</string>
     <string name="action_reset">Ponastavi števce</string>
     <string name="action_save_report">Shrani poročilo</string>
+    <string name="reset">Ponastavljeno</string>
+    <string name="report_saved">Shranjeno poročilo</string>
+    <string name="report_not_saved">Poročilo NI shranjeno</string>
+    <string name="date">Datum</string>
+    <string name="crossroad">Križišče</string>
+    <string name="ok">Potrdi</string>
+    <string name="exit_app">Ali res želite zapustiti štetje?</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="road">Krak</string>
+    <string name="counting_traffic">Štetje prometa</string>
+    <string name="car">Osebni</string>
+    <string name="bus">Bus</string>
+    <string name="truck">Tov</string>
+    <string name="bigtruck">Vlač</string>
+    <string name="left">Levo</string>
+    <string name="right">Desno</string>
+    <string name="straight">Naravnost</string>
+    <string name="imports">Uvoz</string>
+    <string name="exports">Izvoz</string>
+    <string name="time">Ura</string>
+    <string name="vehicle_type">Tip vozila</string>
+
+    <string name="roadA">Krak A</string>
+    <string name="roadB">Krak B</string>
+    <string name="roadC">Krak C</string>
+    <string name="roadD">Krak D</string>
+
+    <string name="car_long_upper">OSEBNI</string>
+    <string name="bus_long_upper">AVTOBUS</string>
+    <string name="truck_long_upper">TOVORNJAK</string>
+    <string name="bigtruck_long_upper">VLAČILEC</string>
+
     <string name="title_activity_menu">MenuActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_crossroad_choose">CrossroadChooseActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_about">AboutActivity</string>
 
+    <string name="excel_header_info">INFO</string>
+    <string name="excel_header_log">LOG</string>
+    <string name="excel_info_00">Štetje prometa v križišču z aplikacijo Crossroad</string>
+    <string name="excel_info_04">Ime in priimek števca</string>
 </resources>

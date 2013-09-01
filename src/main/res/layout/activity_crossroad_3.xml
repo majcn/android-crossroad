@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/bus_button"
-        android:contentDescription="AVTOBUS" />
+        android:contentDescription="@string/bus_long_upper" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/truck_button"
-        android:contentDescription="TOVORNJAK" />
+        android:contentDescription="@string/truck_long_upper" />
     
     <!-- DESNA STRAN -->
     
@@ -62,7 +62,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/car_button"
-        android:contentDescription="OSEBNI" />
+        android:contentDescription="@string/car_long_upper" />
     
     <LinearLayout
         android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bigtruck_button"
-        android:contentDescription="VLAČILEC" />
+        android:contentDescription="@string/bigtruck_long_upper" />
     
     <!-- GORNJA STRAN -->
     

@@ -66,7 +66,7 @@ public class CrossroadActivity extends Activity {
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(dialogNamer);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String name = ((EditText) dialogNamer.findViewById(R.id.name)).getText().toString().trim();
                 String locationName = ((EditText) dialogNamer.findViewById(R.id.locationName)).getText().toString().trim();
@@ -138,7 +138,8 @@ public class CrossroadActivity extends Activity {
                 (ImageButton) findViewById(R.id.btnCD),
                 (ImageButton) findViewById(R.id.btnDA),
                 (ImageButton) findViewById(R.id.btnDB),
-                (ImageButton) findViewById(R.id.btnDC) };
+                (ImageButton) findViewById(R.id.btnDC)
+        };
         mArrowButtons[0].setTag(VehiclePass.TURN_LEFT);
         mArrowButtons[1].setTag(VehiclePass.TURN_STRAIGHT);
         mArrowButtons[2].setTag(VehiclePass.TURN_RIGHT);
@@ -157,7 +158,8 @@ public class CrossroadActivity extends Activity {
                 vibrate();
                 mPasses.add(new VehiclePass(
                         (Integer) mVehicleButtons[mSelectedVehicle].getTag(),
-                        (Integer) v.getTag(), v.getContentDescription().toString()));
+                        (Integer) v.getTag(), v.getContentDescription().toString()
+                ));
                 // Toast.makeText(mContext,
                 // v.getContentDescription().toString(),
                 // Toast.LENGTH_SHORT).show();
@@ -178,14 +180,14 @@ public class CrossroadActivity extends Activity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder quitDialog = new AlertDialog.Builder(CrossroadActivity.this);
-        quitDialog.setTitle("Ali res želite zapustiti štetje?");
-        quitDialog.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+        quitDialog.setTitle(R.string.exit_app);
+        quitDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-        quitDialog.setNegativeButton("Ne", null);
+        quitDialog.setNegativeButton(R.string.no, null);
         quitDialog.show();
     }
 
@@ -199,7 +201,7 @@ public class CrossroadActivity extends Activity {
         if (mPasses.size() == 0) {
             return false;
         }
-        File storagePath = new File(Environment.getExternalStorageDirectory(), "Crossroad");
+        File storagePath = new File(Environment.getExternalStorageDirectory(), getText(R.string.app_name).toString());
         storagePath.mkdirs();
         File gpxfile = new File(storagePath, String.format("%s.xls", mPasses
                 .get(0).getDateTimeFilename()));
@@ -225,44 +227,52 @@ public class CrossroadActivity extends Activity {
             cellFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
 
             WritableSheet sheet = null;
+            String sCar = getText(R.string.car).toString();
+            String sBus = getText(R.string.bus).toString();
+            String sTruck = getText(R.string.truck).toString();
+            String sBigTruck = getText(R.string.bigtruck).toString();
 
             int sheetCounter = 0;
             int row = 0;
             for (String cIn : listIn) {
-                sheet = workbook.createSheet(String.format("KRAK %s", cIn), sheetCounter++);
+                sheet = workbook.createSheet(String.format("%s %s", getText(R.string.road).toString().toUpperCase(), cIn), sheetCounter++);
 
                 sheet.mergeCells(0, 0, 12, 0);
-                sheet.addCell(new Label(0, 0, String.format(
-                        "Štetje prometa (KRAK %s): %s", cIn, mPasses.get(0).getDateTime()),
-                        cellHeaderFormat));
+                sheet.addCell(new Label(0, 0,
+                    String.format("%s (%s %s): %s",
+                        getText(R.string.counting_traffic),
+                        getText(R.string.road).toString().toUpperCase(),
+                        cIn,
+                        mPasses.get(0).getDateTime()),
+                    cellHeaderFormat));
                 sheet.setRowView(0, 30 * 20);
 
                 for (int i = 0; i < 3; i++) {
-                    sheet.addCell(new Label(i * 4 + 1, 3, "osebni", cellFormat));
-                    sheet.addCell(new Label(i * 4 + 2, 3, "bus", cellFormat));
-                    sheet.addCell(new Label(i * 4 + 3, 3, "tov", cellFormat));
-                    sheet.addCell(new Label(i * 4 + 4, 3, "vlac", cellFormat));
+                    sheet.addCell(new Label(i * 4 + 1, 3, sCar, cellFormat));
+                    sheet.addCell(new Label(i * 4 + 2, 3, sBus, cellFormat));
+                    sheet.addCell(new Label(i * 4 + 3, 3, sTruck, cellFormat));
+                    sheet.addCell(new Label(i * 4 + 4, 3, sBigTruck, cellFormat));
                 }
 
                 sheet.mergeCells(1, 2, 4, 2);
-                sheet.addCell(new Label(1, 2, "levo", cellFormat));
+                sheet.addCell(new Label(1, 2, getText(R.string.left).toString(), cellFormat));
                 sheet.mergeCells(5, 2, 8, 2);
-                sheet.addCell(new Label(5, 2, "naravnost", cellFormat));
+                sheet.addCell(new Label(5, 2, getText(R.string.straight).toString(), cellFormat));
                 sheet.mergeCells(9, 2, 12, 2);
-                sheet.addCell(new Label(9, 2, "desno", cellFormat));
+                sheet.addCell(new Label(9, 2, getText(R.string.right).toString(), cellFormat));
 
-                sheet.addCell(new Label(1, 3, "osebni", cellFormat));
-                sheet.addCell(new Label(2, 3, "bus", cellFormat));
-                sheet.addCell(new Label(3, 3, "tov", cellFormat));
-                sheet.addCell(new Label(4, 3, "vlac", cellFormat));
-                sheet.addCell(new Label(5, 3, "osebni", cellFormat));
-                sheet.addCell(new Label(6, 3, "bus", cellFormat));
-                sheet.addCell(new Label(7, 3, "tov", cellFormat));
-                sheet.addCell(new Label(8, 3, "vlac", cellFormat));
-                sheet.addCell(new Label(9, 3, "osebni", cellFormat));
-                sheet.addCell(new Label(10, 3, "bus", cellFormat));
-                sheet.addCell(new Label(11, 3, "tov", cellFormat));
-                sheet.addCell(new Label(12, 3, "vlac", cellFormat));
+                sheet.addCell(new Label(1, 3, sCar, cellFormat));
+                sheet.addCell(new Label(2, 3, sBus, cellFormat));
+                sheet.addCell(new Label(3, 3, sTruck, cellFormat));
+                sheet.addCell(new Label(4, 3, sBigTruck, cellFormat));
+                sheet.addCell(new Label(5, 3, sCar, cellFormat));
+                sheet.addCell(new Label(6, 3, sBus, cellFormat));
+                sheet.addCell(new Label(7, 3, sTruck, cellFormat));
+                sheet.addCell(new Label(8, 3, sBigTruck, cellFormat));
+                sheet.addCell(new Label(9, 3, sCar, cellFormat));
+                sheet.addCell(new Label(10, 3, sBus, cellFormat));
+                sheet.addCell(new Label(11, 3, sTruck, cellFormat));
+                sheet.addCell(new Label(12, 3, sBigTruck, cellFormat));
 
                 counter.resetCounter();
                 String prevTime = mPasses.get(0).getTimeRounded();
@@ -281,11 +291,14 @@ public class CrossroadActivity extends Activity {
                         sheet.addCell(new Label(0, row, prevTime, cellFormat));
                         for (int i = 0; i < sortedTurns.length; i++) {
                             for (int j = 0; j < sortedVehicles.length; j++) {
-                                sheet.addCell(new Label(i
-                                        * sortedVehicles.length + j + 1, row,
+                                sheet.addCell(new Label(i * sortedVehicles.length + j + 1,
+                                        row,
                                         Integer.toString(counter.getCounter(
                                                 sortedVehicles[j],
-                                                sortedTurns[i])), cellFormat));
+                                                sortedTurns[i])
+                                        ),
+                                        cellFormat
+                                ));
                             }
                         }
                         prevTime = time;
@@ -295,11 +308,11 @@ public class CrossroadActivity extends Activity {
                 }
             }
 
-            sheet = workbook.createSheet(String.format("LOG"), sheetCounter++);
-            sheet.addCell(new Label(0, 0, "Ura", cellFormat));
-            sheet.addCell(new Label(1, 0, "Tip vozila", cellFormat));
-            sheet.addCell(new Label(2, 0, "Uvoz", cellFormat));
-            sheet.addCell(new Label(3, 0, "Izvoz", cellFormat));
+            sheet = workbook.createSheet(getText(R.string.excel_header_log).toString(), sheetCounter++);
+            sheet.addCell(new Label(0, 0, getText(R.string.time).toString(), cellFormat));
+            sheet.addCell(new Label(1, 0, getText(R.string.vehicle_type).toString(), cellFormat));
+            sheet.addCell(new Label(2, 0, getText(R.string.imports).toString(), cellFormat));
+            sheet.addCell(new Label(3, 0, getText(R.string.exports).toString(), cellFormat));
             row = 1;
             for (VehiclePass vp : mPasses) {
                 sheet.addCell(new Label(0, row, vp.getTime(), cellFormat));
@@ -309,21 +322,20 @@ public class CrossroadActivity extends Activity {
                 row++;
             }
 
-            sheet = workbook.createSheet(String.format("INFO"), sheetCounter++);
-            sheet.addCell(new Label(0, 0, "Štetje prometa v križišču z aplikacijo Crossroad", cellFormat));
-            sheet.addCell(new Label(0, 2, "Datum:"));
+            sheet = workbook.createSheet(getText(R.string.excel_header_info).toString(), sheetCounter++);
+            sheet.addCell(new Label(0, 0, getText(R.string.excel_info_00).toString(), cellFormat));
+            sheet.addCell(new Label(0, 2, getText(R.string.date)+":"));
             sheet.addCell(new Label(1, 2, mInfo.getDate()));
-            sheet.addCell(new Label(0, 4, "Ime in priimek števca:"));
+            sheet.addCell(new Label(0, 4, getText(R.string.excel_info_04)+":"));
             sheet.addCell(new Label(1, 4, mInfo.getName()));
-            sheet.addCell(new Label(0, 6, "Križišče:"));
+            sheet.addCell(new Label(0, 6, getText(R.string.crossroad)+":"));
             sheet.addCell(new Label(1, 6, mInfo.getLocationName()));
             int currentRow = 8;
             for (String cIn : listIn) {
-                sheet.addCell(new Label(0, currentRow, "Krak "+cIn+":"));
+                sheet.addCell(new Label(0, currentRow, String.format("%s %s:", getText(R.string.road), cIn)));
                 sheet.addCell(new Label(1, currentRow, mInfo.getRoadName(cIn)));
                 currentRow += 2;
             }
-            //sheet.addCell(new Label(0, currentRow, "GPS:"));
 
             workbook.write();
             workbook.close();
@@ -339,15 +351,13 @@ public class CrossroadActivity extends Activity {
         switch (item.getItemId()) {
         case R.id.action_reset:
             mPasses = new ArrayList<VehiclePass>();
-            Toast.makeText(mContext, "Ponastavljeno", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.reset, Toast.LENGTH_SHORT).show();
             return true;
         case R.id.action_save_report:
             if (saveXLSReport()) {
-                Toast.makeText(mContext, "Shranjeno poročilo",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.report_saved, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(mContext, "Poročilo NI shranjeno",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.report_not_saved, Toast.LENGTH_SHORT).show();
             }
             return true;
         default:
