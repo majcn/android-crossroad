@@ -1,5 +1,20 @@
 package si.majcn.krizisce;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,26 +30,10 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
-
 import si.majcn.krizisce.log.D;
 import si.majcn.krizisce.utils.CrossroadInfo;
 import si.majcn.krizisce.utils.DblIntCounter;
 import si.majcn.krizisce.utils.VehiclePass;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Vibrator;
-import android.app.Activity;
-import android.content.Context;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 public class CrossroadActivity extends Activity {
 
