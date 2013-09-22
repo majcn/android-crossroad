@@ -44,8 +44,16 @@ public class VehiclePass {
         return out;
     }
 
+    public String getTime(boolean milisec) {
+        if(milisec) {
+            return time.format("%H:%M:%S.%f");
+        } else {
+            return time.format("%H:%M:%S");
+        }
+    }
+
     public String getTime() {
-        return time.format("%H:%M:%S");
+        return getTime(false);
     }
 
     public String getDateTime() {

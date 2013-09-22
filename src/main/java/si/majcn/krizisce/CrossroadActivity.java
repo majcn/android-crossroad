@@ -314,7 +314,7 @@ public class CrossroadActivity extends Activity {
             sheet.addCell(new Label(3, 0, getText(R.string.exports).toString(), cellFormat));
             row = 1;
             for (VehiclePass vp : mPasses) {
-                sheet.addCell(new Label(0, row, vp.getTime(), cellFormat));
+                sheet.addCell(new Label(0, row, vp.getTime(true), cellFormat));
                 sheet.addCell(new Label(1, row, vp.getTextType(), cellFormat));
                 sheet.addCell(new Label(2, row, vp.getIn(), cellFormat));
                 sheet.addCell(new Label(3, row, vp.getOut(), cellFormat));
